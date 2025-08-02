@@ -15,7 +15,7 @@ const port = process.env.PORT || 8080;
 
 const app = express();
 app.use(helmet());
-app.use(express.json());
+app.use(express.json({limit : "100kb"}));
 app.use(express.static("./public"));
 app.use(morgan("dev"));
 app.use(dateTimeManager.updateRequestInfo);
