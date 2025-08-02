@@ -1,0 +1,30 @@
+{
+	"name": "woolf-task-management-system",
+	"version": "1.0.0",
+	"description": "",
+	"homepage": "https://github.com/DonKlanakin/woolf-task-management-system",
+	"bugs": {
+		"url": "https://github.com/DonKlanakin/woolf-task-management-system/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/DonKlanakin/woolf-task-management-system.git"
+	},
+	"license": "ISC",
+	"author": "DK",
+	"type": "commonjs",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"dev": "nodemon index.js"
+	},
+	"dependencies": {
+		"bcrypt": "^6.0.0",
+		"dotenv": "^17.2.0",
+		"express": "^5.1.0",
+		"jsonwebtoken": "^9.0.2",
+		"morgan": "^1.10.1",
+		"nodemon": "^3.1.10",
+		"pg": "^8.16.3"
+	}
+}
