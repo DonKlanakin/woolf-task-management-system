@@ -1,6 +1,7 @@
 const express = require("express");
-const dotenv = require("dotenv");
+const helmet = require("helmet");
 const morgan = require("morgan");
+const dotenv = require("dotenv");
 
 const systemRoutes = require("./routes/systemRoutes");
 const authRoutes = require("./routes/authRoutes");
@@ -13,6 +14,7 @@ dotenv.config({ path: "./configs/config.env" });
 const port = process.env.PORT || 8080;
 
 const app = express();
+app.use(helmet());
 app.use(express.json());
 app.use(express.static("./public"));
 app.use(morgan("dev"));
