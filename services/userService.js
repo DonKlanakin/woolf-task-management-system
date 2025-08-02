@@ -3,6 +3,7 @@ const errorHandler = require("../utils/errorHandler");
 const securityManager = require("../security/securityManager");
 
 exports.getAllUsers = async (req, res, next) => {
+	const logPrefix = "getAllUsers :";
 	try {
 		let sql = "SELECT * FROM users";
 		let servResponse = await pool.query(sql);
@@ -16,6 +17,28 @@ exports.getAllUsers = async (req, res, next) => {
 			errorHandler.throwEntryNotFoundError("Failed Retrieving users. :", res);
 		}
 	} catch (err) {
+		console.debug(`${logPrefix} ${err}`);
+		errorHandler.mapError(err, req, res, next);
+	}
+};
+
+exports.getUserById = async (req, res, next) => {
+	const logPrefix = "getUserById :";
+	try {
+		let id = req.params.id;
+		let sql = `SELECT * from USERS WHERE id = $1`;
+		let servResponse = await pool.query(sql, [id]);
+		if (servResponse.rowCount > 0) {
+			res.status(200).json({
+				status: "success",
+				requestSentAt: req.requestedAt,
+				data: servResponse
+			});
+		} else {
+			errorHandler.throwEntityIdNotFoundError("Failed Retrieving users. :", id, res);
+		}
+	} catch (err) {
+		console.debug(`${logPrefix} ${err}`);
 		errorHandler.mapError(err, req, res, next);
 	}
 };

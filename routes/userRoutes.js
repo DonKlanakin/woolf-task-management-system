@@ -13,6 +13,10 @@ userRoutes
 	);
 userRoutes
 	.route("/:id")
+	.get(
+		securityManager.verifyToken,
+		userService.getUserById
+	)
 	.post(
 		securityManager.verifyToken,
         securityManager.verifyAdminLevelClearance,
