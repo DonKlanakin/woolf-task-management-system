@@ -8,7 +8,7 @@ userRoutes
 	.route("/")
 	.get(
 		securityManager.verifyToken,
-		securityManager.verifyOperatorLevelClearance,
+		securityManager.verifyAdminLevelClearance,
 		userService.getAllUsers
 	);
 userRoutes
@@ -16,12 +16,6 @@ userRoutes
 	.get(
 		securityManager.verifyToken,
 		userService.getUserById
-	)
-	.post(
-		securityManager.verifyToken,
-        securityManager.verifyAdminLevelClearance,
-		validator.validateId,
-		userService.updateUserById
 	);
 
 module.exports = userRoutes;
