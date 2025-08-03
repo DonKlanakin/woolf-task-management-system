@@ -7,44 +7,56 @@ exports.mapError = (err, req, res, next) => {
 
 exports.handlePathNotFound = (req, res, next) => {
 	try {
-		this.throwPathNotFoundError(null, req, res);
+		this.throwPathNotFoundError(`URL: ${req.originalUrl} not found.`);
 	} catch (err) {
 		this.mapError(err, req, res, next);
 	}
 };
 
-exports.throwPathNotFoundError = (prefix, req, res) => {
-	let err = new Error();
-	prefix = prefix || "throwPathNotFoundError :";
-	err.status = "fail";
-	err.responseCode = 404;
-	err.message = `URL: ${req.originalUrl} not found.`;
-	throw err;
-};
-
-exports.throwEntryNotFoundError = (prefix, res) => {
-	let err = new Error();
-	prefix = prefix || "throwEntryNotFoundError :";
-	err.status = "fail";
-	err.responseCode = 404;
-	err.message = `${prefix} No entry found.`;
-	throw err;
-};
-
-exports.throwEntityIdNotFoundError = (prefix, id, res) => {
-	let err = new Error();
-	prefix = prefix || "throwEntityIdNotFoundError :";
-	err.status = "fail";
-	err.responseCode = 404;
-	err.message = `${prefix} ID[${id}] not found.`;
-	throw err;
-};
-
-exports.throwCreationFailureError = (prefix, res) => {
-	let err = new Error();
-	prefix = prefix || "throwCreationFailureError :";
+exports.throwBadRequestError = (message, req, res) => {
+	const err = new Error();
 	err.status = "fail";
 	err.responseCode = 400;
-	err.message = `${prefix} No changes were made.`;
+	err.message = message || "Invalid request data";
+	throw err;
+}
+
+exports.throwCreationFailureError = (message, req, res) => {
+	const err = new Error();
+	err.status = "fail";
+	err.responseCode = 400;
+	err.message = message || "Creation failure.";
+	throw err;
+};
+
+exports.throwAuthorizationFailureError = (message, req, res) => {
+	const err = new Error();
+	err.status = "fail";
+	err.responseCode = 401;
+	err.message = message || "Authorization failure.";
+	throw err;
+}
+
+exports.throwForbiddenActionError = (message, req, res) => {
+	const err = new Error();
+	err.status = "fail";
+	err.responseCode = 403;
+	err.message = message || "Forbidden activity.";
+	throw err;
+}
+
+exports.throwPathNotFoundError = (message, req, res) => {
+	const err = new Error();
+	err.status = "fail";
+	err.responseCode = 404;
+	err.message = message || "Path not found.";
+	throw err;
+};
+
+exports.throwDataNotFoundError = (message, req, res) => {
+	const err = new Error();
+	err.status = "fail";
+	err.responseCode = 404;
+	err.message = message || "Data not found.";
 	throw err;
 };

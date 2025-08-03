@@ -11,11 +11,7 @@ exports.createTask = async (req, res, next) => {
 		let sqlCheckDuplicate = `SELECT * FROM tasks WHERE username = $1`;
 		let result = await pool.query(sqlCheckDuplicate, [body.username]);
 		if (result.rowCount > 0) {
-			return res.status(400).json({
-				status: "fail",
-				responseCode: "400",
-				message: "Task already exists."
-			});
+			errorHandler.throwBadRequestError("Task already exists.");
 		}
 		let sql = `INSERT INTO users (firstname, lastname, email, username, password)
                     VALUES ($1, $2, $3, $4, $5) RETURNING *;`;
@@ -34,7 +30,9 @@ exports.createTask = async (req, res, next) => {
 				data: servResponse
 			});
 		} else {
-			errorHandler.throwCreationFailureError("Failed creating a user.", res);
+			errorHandler.throwCreationFailureError(
+				"Failed creating a task. No changes were made."
+			);
 		}
 	} catch (err) {
 		console.debug(`${logPrefix} ${err}`);
@@ -54,7 +52,9 @@ exports.getAllTasks = async (req, res, next) => {
 				data: servResponse
 			});
 		} else {
-			errorHandler.throwEntryNotFoundError("Failed Retrieving tasks. :", res);
+			errorHandler.throwDataNotFoundError(
+				`Failed Retrieving tasks. No entry found.`
+			);
 		}
 	} catch (err) {
 		console.debug(`${logPrefix} ${err}`);
@@ -81,10 +81,8 @@ exports.updateTaskById = async (req, res, next) => {
 				data: servResponse
 			});
 		} else {
-			errorHandler.throwEntityIdNotFoundError(
-				"Failed updating user information. :",
-				id,
-				res
+			errorHandler.throwDataNotFoundError(
+				`No changes were made, ID[${id}] not found.`
 			);
 		}
 	} catch (err) {

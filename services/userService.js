@@ -14,7 +14,7 @@ exports.getAllUsers = async (req, res, next) => {
 				data: servResponse
 			});
 		} else {
-			errorHandler.throwEntryNotFoundError("Failed Retrieving users. :", res);
+			errorHandler.throwDataNotFoundError("Failed Retrieving users. No entry found.");
 		}
 	} catch (err) {
 		console.debug(`${logPrefix} ${err}`);
@@ -35,7 +35,7 @@ exports.getUserById = async (req, res, next) => {
 				data: servResponse
 			});
 		} else {
-			errorHandler.throwEntityIdNotFoundError("Failed Retrieving users. :", id, res);
+			errorHandler.throwDataNotFoundError(`Failed Retrieving user, ID[${id}] not found.`);
 		}
 	} catch (err) {
 		console.debug(`${logPrefix} ${err}`);
@@ -62,11 +62,7 @@ exports.updateUserById = async (req, res, next) => {
 				data: servResponse
 			});
 		} else {
-			errorHandler.throwEntityIdNotFoundError(
-				"Failed updating user information. :",
-				id,
-				res
-			);
+			errorHandler.throwDataNotFoundError(`No changes were made, ID[${id}] not found.`);
 		}
 	} catch (err) {
 		console.debug(`${logPrefix} ${err}`);
