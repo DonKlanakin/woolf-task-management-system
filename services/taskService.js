@@ -95,21 +95,12 @@ exports.updateTaskById = async (req, res, next) => {
 		let body = req.body;
 		const userId = req.auth.id;
 		const userRole = req.auth.role;
-
-		const updates = Object.keys(body).map((key, index) => {
-			const pgKey = key.replace(/([A-Z])/g, "_$1").toLowerCase();
-			return `"${pgKey}" = $${index + 1}`;
-		});
+		const fields = Object.keys(body).map((key, index) => `"${key}" = $${index + 1}`);
 		const values = Object.values(body);
-
-		// Check if the logged-in user has the authorization to perform an UPDATE operation.
-		let sql = `UPDATE tasks SET ${updates.join(", ")} WHERE id = $${
-			values.length + 1
-		} AND ("assigned_to" = $${values.length + 2} OR $${
-			values.length + 3
-		} = 'admin') RETURNING *;`;
 		values.push(id, userId, userRole);
 
+		// Check if the logged-in user is the owner or an admin.
+		let sql = `UPDATE tasks SET ${fields.join(", ")} WHERE id = $${values.length - 2} AND ("assigned_to" = $${values.length - 1} OR $${values.length} = 'admin') RETURNING *;`;
 		let servResponse = await pool.query(sql, values);
 
 		if (servResponse.rowCount > 0) {
@@ -120,8 +111,8 @@ exports.updateTaskById = async (req, res, next) => {
 				data: servResponse
 			});
 		} else {
-			errorHandler.throwDataNotFoundError(
-				`No changes were made, ID[${id}] not found.`
+			errorHandler.throwForbiddenActionError(
+				`Forbidden activity. No changes were made.`
 			);
 		}
 	} catch (err) {
@@ -137,7 +128,7 @@ exports.deleteTaskById = async (req, res, next) => {
 		const userId = req.auth.id;
 		const userRole = req.auth.role;
 
-		// Check if the logged-in user has the authorization to perform a DELETE operation.
+		// Check if the logged-in user is the owner or an admin.
 		let sql = `DELETE FROM tasks WHERE id = $1 AND ("assigned_to" = $2 OR $3 = 'admin') RETURNING *`;
 		let servResponse = await pool.query(sql, [id, userId, userRole]);
 
@@ -149,8 +140,8 @@ exports.deleteTaskById = async (req, res, next) => {
 				data: servResponse
 			});
 		} else {
-			errorHandler.throwDataNotFoundError(
-				`No changes were made, ID[${id}] not found.`
+			errorHandler.throwForbiddenActionError(
+				`Forbidden activity. No changes were made.`
 			);
 		}
 	} catch (err) {
