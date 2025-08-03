@@ -39,6 +39,7 @@
     "title": "Set up production environment on Heroku",
     "description": "Configure the server and database environment variables for a live deployment.",
     "status": "pending",
+    "assigned_to": "",
     "due_date": "2025-08-10T12:00:00Z"
   },
   {
