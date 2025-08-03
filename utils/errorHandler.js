@@ -60,3 +60,11 @@ exports.throwDataNotFoundError = (message, req, res) => {
 	err.message = message || "Data not found.";
 	throw err;
 };
+
+exports.throwInternalServerError = (message, req, res) => {
+	const err = new Error();
+	err.status = "fail";
+	err.responseCode = 500;
+	err.message = message || "Internal Server Error.";
+	throw err;
+};
