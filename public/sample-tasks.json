@@ -1,0 +1,72 @@
+[
+  {
+    "title": "Implement user authentication with JWT",
+    "description": "Develop and integrate JWT-based authentication middleware for all API routes.",
+    "status": "in-progress",
+    "assigned_to": "823eb2a7-6dbe-4b26-82cf-d3f11094fb4d",
+    "due_date": "2025-08-15T23:59:59Z"
+  },
+  {
+    "title": "Fix bug in taskService update function",
+    "description": "The dynamic SQL for updating tasks is causing a syntax error when a field is null. Need to review the logic.",
+    "status": "pending",
+    "assigned_to": "823eb2a7-6dbe-4b26-82cf-d3f11094fb4d",
+    "due_date": "2025-08-05T17:00:00Z"
+  },
+  {
+    "title": "Write unit tests for taskRoutes",
+    "description": "Create a test suite using Jest to cover all CRUD endpoints in taskRoutes.",
+    "status": "pending",
+    "assigned_to": "823eb2a7-6dbe-4b26-82cf-d3f11094fb4d",
+    "due_date": "2025-08-20T23:59:59Z"
+  },
+  {
+    "title": "Review database schema for to-do app",
+    "description": "Check if the current tables and constraints meet all future requirements. Consider adding an 'is_archived' field.",
+    "status": "completed",
+    "assigned_to": "823eb2a7-6dbe-4b26-82cf-d3f11094fb4d",
+    "due_date": "2025-07-28T23:59:59Z"
+  },
+  {
+    "title": "Create API documentation for v1",
+    "description": "Use Swagger or Postman to generate clear and concise API docs for the to-do list v1 endpoints.",
+    "status": "in-progress",
+    "assigned_to": "823eb2a7-6dbe-4b26-82cf-d3f11094fb4d",
+    "due_date": "2025-08-30T23:59:59Z"
+  },
+  {
+    "title": "Refactor code to improve readability",
+    "description": "Clean up repetitive code, add JSDoc comments, and ensure all functions follow naming conventions.",
+    "status": "pending",
+    "assigned_to": "823eb2a7-6dbe-4b26-82cf-d3f11094fb4d",
+    "due_date": "2025-09-05T23:59:59Z"
+  },
+  {
+    "title": "Set up production environment on Heroku",
+    "description": "Configure the server and database environment variables for a live deployment.",
+    "status": "pending",
+    "assigned_to": "823eb2a7-6dbe-4b26-82cf-d3f11094fb4d",
+    "due_date": "2025-08-10T12:00:00Z"
+  },
+  {
+    "title": "Investigate performance issues on GET /tasks",
+    "description": "Run performance tests on the `getAllTasks` endpoint to see if large datasets cause slowdowns.",
+    "status": "in-progress",
+    "assigned_to": "823eb2a7-6dbe-4b26-82cf-d3f11094fb4d",
+    "due_date": "2025-08-25T23:59:59Z"
+  },
+  {
+    "title": "Deploy hotfix for critical security vulnerability",
+    "description": "A new exploit has been found related to UUID validation. Need to push a fix immediately.",
+    "status": "completed",
+    "assigned_to": "823eb2a7-6dbe-4b26-82cf-d3f11094fb4d",
+    "due_date": "2025-08-01T10:00:00Z"
+  },
+  {
+    "title": "Plan for feature v2.0",
+    "description": "Brainstorm and document new features for the next major release, including user profiles and task sharing.",
+    "status": "pending",
+    "assigned_to": "823eb2a7-6dbe-4b26-82cf-d3f11094fb4d",
+    "due_date": "2025-09-15T23:59:59Z"
+  }
+]
