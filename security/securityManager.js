@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const dotenv = require("dotenv");
 const jwt = require("jsonwebtoken");
+const errorHandler = require("../utils/errorHandler");
 
 dotenv.config({ path: "./configs/config.env" });
 
@@ -32,7 +33,6 @@ exports.issueToken = async (payload) => {
 		const activePeriod = 60 * 60;
 		const secretkey = process.env.JWT_SECRET_KEY;
 		return jwt.sign(payload, secretkey, { expiresIn: activePeriod });
-		
 	} catch (err) {
 		console.debug(`${logPrefix} ${err}`);
 		return res.status(500).json({
@@ -45,17 +45,13 @@ exports.issueToken = async (payload) => {
 exports.verifyToken = (req, res, next) => {
 	const logPrefix = "varifyToken :";
 	if (!req.headers.authorization) {
-		return res.status(401).json({
-			status: "fail",
-			message: "Authentication required."
-		});
+		errorHandler.throwAuthorizationFailureError("Authentication failed.");
 	}
 	const tokenParts = req.headers.authorization.split(" ");
 	if (tokenParts.length !== 2 || tokenParts[0] !== "Bearer") {
-		return res.status(401).json({
-			status: "fail",
-			message: `Permission denied due to invalid authentication header format. It must be "Bearer <token>."`
-		});
+		errorHandler.throwAuthorizationFailureError(
+			`Authorization failed due to invalid authentication header format. It must be "Bearer <token>."`
+		);
 	}
 	try {
 		const token = tokenParts[1];
@@ -63,10 +59,7 @@ exports.verifyToken = (req, res, next) => {
 		req.auth = jwt.verify(token, secretKey);
 	} catch (err) {
 		console.debug(`${logPrefix} ${err}`);
-		return res.status(401).json({
-			status: "fail",
-			message: "Invalid token. Permission denied."
-		});
+		errorHandler.mapError(err, req, res, next);
 	}
 	next();
 };
@@ -78,19 +71,11 @@ exports.verifyOperatorLevelClearance = (req, res, next) => {
 		if (role === "operator" || role === "admin") {
 			return next();
 		} else {
-			return res.status(403).json({
-				status: "fail",
-				message: "Permission denied."
-			});
+			errorHandler.throwForbiddenActionError("Permission denied.");
 		}
 	} catch (err) {
 		console.debug(`${logPrefix} ${err}`);
-		return res.status(403).json({
-			status: "fail",
-			message: "Verifying clearance process failed."
-		});
-
-		// TODO: check if this can be directed to errorHandler.mapError
+		errorHandler.mapError(err, req, res, next);
 	}
 };
 
@@ -101,23 +86,16 @@ exports.verifyAdminLevelClearance = (req, res, next) => {
 		if (role === "admin") {
 			return next();
 		} else {
-			return res.status(401).json({
-				status: "fail",
-				message: "Permission denied."
-			});
+			errorHandler.throwForbiddenActionError("Permission denied.");
 		}
 	} catch (err) {
 		console.debug(`${logPrefix} ${err}`);
-		return res.status(401).json({
-			status: "fail",
-			message: "Verifying clearance process failed."
-		});
-
-		// TODO: check if this can be directed to errorHandler.mapError
+		errorHandler.mapError(err, req, res, next);
 	}
 };
 
 exports.isValidUUID = (id) => {
-    const uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89ab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/;
-    return uuidRegex.test(id);
+	const uuidRegex =
+		/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89ab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/;
+	return uuidRegex.test(id);
 };
