@@ -44,7 +44,7 @@ exports.loginUser = async (req, res, next) => {
 		let values = [body.email];
 		let servResponse = await pool.query(sql, values);
 		if (servResponse.rowCount <= 0) {
-			errorHandler.throwAuthorizationFailureError("Invalid username or password.");
+			errorHandler.throwAuthorizationFailureError(`User with email [${body.email}] was not found.`);
 		}
 
 		// User Authentication
